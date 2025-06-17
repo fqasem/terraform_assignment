@@ -93,6 +93,28 @@ resource "aws_security_group_rule" "allow_http_inbound" {
 
 }
 
+resource "aws_security_group_rule" "allow_ssh_inbound" {
+  type              = "ingress"
+  security_group_id = aws_security_group.instances.id
+
+  from_port   = 22
+  to_port     = 22
+  protocol    = "tcp"
+  cidr_blocks = ["0.0.0.0/0"]
+
+}
+
+resource "aws_security_group_rule" "allow_outbound" {
+  type              = "egress"
+  security_group_id = aws_security_group.instances.id
+
+  from_port   = 0
+  to_port     = 0
+  protocol    = "-1"
+  cidr_blocks = ["0.0.0.0/0"]
+
+}
+
 resource "aws_security_group" "alb" {
   name = "${var.app_name}-${var.environment_name}-alb-security-group"
   vpc_id      = aws_vpc.main_vpc.id
@@ -197,3 +219,22 @@ resource "aws_lb" "load_balancer" {
   security_groups    = [aws_security_group.alb.id]
 
 }
+
+
+#################################################################
+###                    Endpoints                           ######
+#################################################################
+
+
+# Note: This part is for accessing S3 bucket from the EC2 instance that resides in the private subnet
+# Default endpoint type is gateway
+resource "aws_vpc_endpoint" "gateway_endpoint" {
+  vpc_id            = aws_vpc.main_vpc.id
+  service_name      = "com.amazonaws.${var.region}.s3" 
+  route_table_ids   = [aws_route_table.private_rt.id] 
+  tags = {
+    "Name" = "gateway-s3"
+  }
+}
+
+

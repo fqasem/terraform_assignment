@@ -16,6 +16,7 @@ This project conatains two EC2 instances - one in public subnet and the other in
 - **storage.tf**: Contains storage infrastructure.
 - **variables.tf**: Defines input variables for customizing the Terraform configuration.
 - **outputs.tf**: Specifies the outputs of the Terraform configuration, detailing what information will be displayed after deployment.
+- **iam.tf**: Contains iam roles and assignments.
 
 ## Getting Started
 
@@ -56,3 +57,11 @@ This project conatains two EC2 instances - one in public subnet and the other in
 ## Additional Information
 
 Refer to the official Terraform documentation online for more details on commands and configurations.
+
+## How to Test
+
+1. **Test Load Balancer**
+   To test the Load Balancer, use curl "load_balancer_dns_name" after terraform apply runs successfuly. The output load_balancer_dns_name is printed on console.
+
+2. **Test S3 read access from EC2 in private subnet**
+   Connect to EC2 that is in private subnet from AWS console. Then use aws cli to access s3. Run "aws s3 ls" and "aws s3 ls s3://bucket-name"
