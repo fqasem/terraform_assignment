@@ -4,7 +4,7 @@ This project contains Terraform configurations for managing AWS infrastructure. 
 
 ## Project Description
 
-This project conatains two EC2 instances - one in public subnet and the other in private subnet in one AWS VPC. It also has a load balancer to distribute the load between the two EC2 instances. It has a NAT gateway in the private subnet and an object storage for which we will be using Amazon S3 service.
+This project conatains two EC2 instances - one in public subnet and the other in private subnet in one AWS VPC. It also has a load balancer to distribute the load between the two EC2 instances. It has a NAT gateway in the private subnet and an object storage for which we will be using Amazon S3 service. The EC2 in private subnet will be able to access S3 bucket.
 
 ## Project Structure
 
@@ -61,7 +61,7 @@ Refer to the official Terraform documentation online for more details on command
 ## How to Test
 
 1. **Test Load Balancer**
-   To test the Load Balancer, use curl "load_balancer_dns_name" after terraform apply runs successfuly. The output load_balancer_dns_name is printed on console.
+   To test the Load Balancer, use curl "load_balancer_dns_name" after terraform apply runs successfuly. The output load_balancer_dns_name is printed on console. You should see "Hello World 1" and "Hello World 2" interchangeably when running the curl command multiple times.
 
 2. **Test S3 read access from EC2 in private subnet**
-   Connect to EC2 that is in private subnet from AWS console. Then use aws cli to access s3. Run "aws s3 ls" and "aws s3 ls s3://bucket-name"
+   Upload some files to S3 bucket. Connect to EC2 that is in private subnet from AWS console. Then use aws cli to access s3. Run "aws s3 ls" and "aws s3 ls s3://bucket-name". You should see the files listed.
